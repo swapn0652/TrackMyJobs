@@ -1,0 +1,73 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id            String   @id @default(uuid())
+  name          String?
+  email         String   @unique
+  passwordHash  String?
+  isVerified    Boolean  @default(false)
+  otp           String?
+  otpExpiresAt  DateTime?
+  jobs          Job[]
+  refreshTokens RefreshToken[]
+  createdAt     DateTime @default(now())
+}
+
+
+
+model Job {
+  id              String          @id @default(uuid())
+  user            User            @relation(fields: [userId], references: [id])
+  userId          String
+  companyName     String
+  jobRole         String
+  source          String?         // LinkedIn / Referral / Naukri etc
+  appliedDate     DateTime?
+  jobDescription  String?         // rich text
+  ctcRange        String?         // e.g. "12-15 LPA"
+  resumePath      String?         // local file path
+  coverLetterPath String?         // optional
+  jobLink         String?         // important
+  interviewRounds InterviewRound[]
+  createdAt       DateTime        @default(now())
+}
+
+model InterviewRound {
+  id        String      @id @default(uuid())
+  job       Job         @relation(fields: [jobId], references: [id])
+  jobId     String
+  roundType String
+  roundDate DateTime?
+  notes     String?     // what was asked
+  result    RoundResult @default(WAITING)
+}
+
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  token     String
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+}
+
+// Enums
+enum RoundResult {
+  PASS
+  FAIL
+  WAITING
+}
