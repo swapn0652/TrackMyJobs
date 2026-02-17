@@ -35,6 +35,7 @@ model Job {
   companyName     String
   jobRole         String
   source          String?         // LinkedIn / Referral / Naukri etc
+  status          JobStatus       @default(APPLIED) 
   appliedDate     DateTime?
   jobDescription  String?         // rich text
   ctcRange        String?         // e.g. "12-15 LPA"
@@ -70,4 +71,11 @@ enum RoundResult {
   PASS
   FAIL
   WAITING
+}
+
+enum JobStatus {
+  APPLIED
+  INTERVIEWING
+  OFFER
+  REJECTED
 }
