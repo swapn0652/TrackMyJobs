@@ -3,11 +3,18 @@ import cors from 'cors';
 import authRoutes  from './routes/auth';
 import dashboardRoutes from './routes/dashboard';
 import interviewRoundsRoutes from './routes/interviewRounds';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const app = express();
 
-// Allow all origins explicitly
-app.use(cors({ origin: '*' }));
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL,
+    credentials: true,
+  })
+);
+
 app.use(express.json());
 
 app.use('/api/auth', authRoutes);

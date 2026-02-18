@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Sidebar from "./components/Sidebar";
-import Navbar from "./components/Navbar";
+import Sidebar from "../components/Sidebar";
+import Navbar from "../components/Navbar";
 import { Caveat, Indie_Flower } from "next/font/google";
 
 const caveat = Caveat({

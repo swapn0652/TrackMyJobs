@@ -2,9 +2,11 @@
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import Sidebar from "./Sidebar";
+import { useAuthStore } from "@/store/authStore";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const user = useAuthStore((s) => s.user);
 
   return (
     <>
@@ -21,7 +23,9 @@ export default function Navbar() {
           <h1 className="text-2xl sm:text-3xl">Dashboard ✏️</h1>
         </div>
 
-        <div className="text-lg sm:text-xl">👤</div>
+        <div className="text-lg sm:text-xl">
+          {user ? `👤 ${user.name}` : "👤"}
+        </div>
       </nav>
 
       {/* MOBILE SIDEBAR + OVERLAY */}
