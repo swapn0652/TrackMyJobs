@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const JWT_SECRET = process.env.JWT_SECRET || 'supersecretkey';
-const JWT_EXPIRES_IN = '15m';
+const JWT_EXPIRES_IN = '1d';
 const REFRESH_EXPIRES_IN = '7d';
 
 export const hashPassword = async (password: string) => {

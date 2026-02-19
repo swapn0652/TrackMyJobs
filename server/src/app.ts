@@ -3,6 +3,7 @@ import cors from 'cors';
 import authRoutes  from './routes/auth';
 import dashboardRoutes from './routes/dashboard';
 import interviewRoundsRoutes from './routes/interviewRounds';
+import jobsRoutes from './routes/jobs';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -20,6 +21,7 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/interview-rounds', interviewRoundsRoutes);
+app.use('/api/jobs', jobsRoutes);
 
 // Test route
 app.get('/', (req, res) => {

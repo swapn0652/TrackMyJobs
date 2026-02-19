@@ -3,6 +3,7 @@ import "./globals.css";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 import { Caveat, Indie_Flower } from "next/font/google";
+import ReactQueryProvider from "@/providers/ReactQueryProvider";
 
 const caveat = Caveat({
   subsets: ["latin"],
@@ -40,9 +41,11 @@ export default function RootLayout({
           {/* RIGHT SECTION */}
           <div className="flex-1 flex flex-col">
             <Navbar />
-            <main className="flex-1 overflow-y-auto p-4 sm:p-6">
-              {children}
-            </main>
+            <ReactQueryProvider>
+              <main className="flex-1 overflow-y-auto p-4 sm:p-6">
+                {children}
+              </main>
+            </ReactQueryProvider>
           </div>
 
         </div>

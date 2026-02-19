@@ -1,48 +1,44 @@
 "use client";
-import { useState } from "react";
-import { useSignup } from "@/hooks/useSignup";
-import type { VerifyOtpProps } from "@/types/auth.types";
 
-export default function VerifyOTP({ email }: VerifyOtpProps) {
-  const [otp, setOtp] = useState("");
-  const { handleVerifyOtp, loading, error } = useSignup();
+import { useForm } from "react-hook-form";
+import { useVerifyOtpMutation } from "@/hooks/useAuthMutations";
 
-  const onSubmit = async () => {
-    if (!email) return;
+type FormData = {
+  otp: string;
+};
 
-    try {
-      await handleVerifyOtp(email, otp); 
-    } catch (err) {
-      console.error(err);
-    }
+export default function VerifyOTP({ email }: any) {
+  const { register, handleSubmit } = useForm<FormData>();
+  const verifyMutation = useVerifyOtpMutation();
+
+  const onSubmit = async (data: FormData) => {
+    await verifyMutation.mutateAsync({ email, otp: data.otp });
   };
 
   return (
-    <div className="space-y-6 text-center">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 text-center">
       <h1 className="text-3xl sm:text-4xl">Verify Email 📬</h1>
 
       <p className="text-lg sm:text-xl">
-        We sent an OTP to
-        <br />
+        We sent an OTP to <br />
         <span className="font-bold break-all">{email}</span>
       </p>
 
-      {error && <p className="text-red-600">{error}</p>}
+      {verifyMutation.isError && (
+        <p className="text-red-600">
+          {(verifyMutation.error as any)?.response?.data?.message}
+        </p>
+      )}
 
       <input
-        value={otp}
-        onChange={(e) => setOtp(e.target.value)}
+        {...register("otp", { required: true })}
         placeholder="Enter OTP"
-        className="w-full p-3 sketch-border bg-white text-lg sm:text-xl text-center tracking-[6px] sm:tracking-[8px]"
+        className="w-full p-3 sketch-border bg-white text-lg sm:text-xl text-center tracking-[8px]"
       />
 
-      <button
-        onClick={onSubmit}
-        disabled={loading}
-        className="press-btn w-full p-3 sketch-border bg-blue-200 text-xl sm:text-2xl cursor-pointer"
-      >
-        {loading ? "Verifying..." : "Verify & Continue 🚀"}
+      <button className="press-btn w-full p-3 sketch-border bg-blue-200 text-xl sm:text-2xl">
+        {verifyMutation.isPending ? "Verifying..." : "Verify & Continue 🚀"}
       </button>
-    </div>
+    </form>
   );
 }
