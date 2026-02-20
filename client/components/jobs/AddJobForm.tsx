@@ -1,8 +1,20 @@
 "use client";
 
-import { useState } from "react";
 import { useJobMutations } from "@/hooks/useJobsQuery";
 import { AxiosError } from "axios";
+import { useForm } from "react-hook-form";
+
+type FormValues = {
+  companyName: string;
+  jobRole: string;
+  location: string;
+  source: string;
+  appliedDate: string;
+  jobDescription?: string;
+  ctcRange?: string;
+  jobLink?: string;
+  resumePath?: string;
+};
 
 const getErrorMessage = (error: unknown) => {
   if (error instanceof AxiosError) {
@@ -12,38 +24,28 @@ const getErrorMessage = (error: unknown) => {
 };
 
 export default function AddJobForm() {
-  const [companyName, setCompanyName] = useState("");
-  const [jobRole, setJobRole] = useState("");
-  const [source, setSource] = useState("");
-  const [appliedDate, setAppliedDate] = useState("");
-  const [jobDescription, setJobDescription] = useState("");
-  const [ctcRange, setCtcRange] = useState("");
-  const [jobLink, setJobLink] = useState("");
-
   const { createJob, creating, createError } = useJobMutations();
 
-  const onSubmit = async () => {
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isValid },
+  } = useForm<FormValues>({
+    mode: "onChange",
+  });
+
+  const onSubmit = async (data: FormValues) => {
     await createJob({
-      companyName,
-      jobRole,
-      source,
-      appliedDate,
-      jobDescription,
-      ctcRange,
-      jobLink,
+      ...data,
+      jobDescription: data.jobDescription || undefined,
+      ctcRange: data.ctcRange || undefined,
+      jobLink: data.jobLink || undefined,
+      resumePath: data.resumePath || undefined,
     });
 
-    alert("Job added successfully! 🚀");
-
-    setCompanyName("");
-    setJobRole("");
-    setSource("");
-    setAppliedDate("");
-    setJobDescription("");
-    setCtcRange("");
-    setJobLink("");
+    reset();
   };
-
 
   return (
     <div className="max-w-3xl mx-auto space-y-6 p-6 bg-white border-2 border-black rounded-xl shadow-md">
@@ -55,87 +57,118 @@ export default function AddJobForm() {
         </p>
       )}
 
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 text-lg sm:text-xl">
 
-      <div className="space-y-4 text-lg sm:text-xl">
+        {/* Company */}
         <div>
-          <label className="block mb-1 font-semibold">Company Name</label>
+          <label className="block mb-1 font-semibold">Company Name *</label>
           <input
-            value={companyName}
-            onChange={(e) => setCompanyName(e.target.value)}
-            placeholder="Enter company name"
+            {...register("companyName", { required: "Company name is required" })}
             className="w-full p-3 sketch-border bg-white"
           />
+          {errors.companyName && (
+            <p className="text-red-500 text-sm">{errors.companyName.message}</p>
+          )}
         </div>
 
+        {/* Role */}
         <div>
-          <label className="block mb-1 font-semibold">Job Role</label>
+          <label className="block mb-1 font-semibold">Job Role *</label>
           <input
-            value={jobRole}
-            onChange={(e) => setJobRole(e.target.value)}
-            placeholder="Enter job role"
+            {...register("jobRole", { required: "Job role is required" })}
             className="w-full p-3 sketch-border bg-white"
           />
+          {errors.jobRole && (
+            <p className="text-red-500 text-sm">{errors.jobRole.message}</p>
+          )}
         </div>
 
+        {/* Location */}
         <div>
-          <label className="block mb-1 font-semibold">Source</label>
+          <label className="block mb-1 font-semibold">Location *</label>
           <input
-            value={source}
-            onChange={(e) => setSource(e.target.value)}
-            placeholder="LinkedIn, Referral, etc."
+            {...register("location", { required: "Location is required" })}
             className="w-full p-3 sketch-border bg-white"
           />
+          {errors.location && (
+            <p className="text-red-500 text-sm">{errors.location.message}</p>
+          )}
         </div>
 
+        {/* Source */}
         <div>
-          <label className="block mb-1 font-semibold">Applied Date</label>
+          <label className="block mb-1 font-semibold">Source *</label>
           <input
-            value={appliedDate}
-            onChange={(e) => setAppliedDate(e.target.value)}
+            {...register("source", { required: "Source is required" })}
+            className="w-full p-3 sketch-border bg-white"
+          />
+          {errors.source && (
+            <p className="text-red-500 text-sm">{errors.source.message}</p>
+          )}
+        </div>
+
+        {/* Applied Date */}
+        <div>
+          <label className="block mb-1 font-semibold">Applied Date *</label>
+          <input
             type="date"
+            {...register("appliedDate", { required: "Applied date is required" })}
             className="w-full p-3 sketch-border bg-white"
           />
+          {errors.appliedDate && (
+            <p className="text-red-500 text-sm">{errors.appliedDate.message}</p>
+          )}
         </div>
 
+        {/* Job Description */}
         <div>
           <label className="block mb-1 font-semibold">Job Description</label>
           <textarea
-            value={jobDescription}
-            onChange={(e) => setJobDescription(e.target.value)}
-            placeholder="Enter job description"
-            rows={6} // bigger textarea
+            rows={5}
+            {...register("jobDescription")}
             className="w-full p-3 sketch-border bg-white"
           />
         </div>
 
+        {/* CTC */}
         <div>
           <label className="block mb-1 font-semibold">CTC Range</label>
           <input
-            value={ctcRange}
-            onChange={(e) => setCtcRange(e.target.value)}
-            placeholder="e.g., 10-12 LPA"
+            {...register("ctcRange")}
             className="w-full p-3 sketch-border bg-white"
           />
         </div>
 
+        {/* Job Link */}
         <div>
           <label className="block mb-1 font-semibold">Job Link</label>
           <input
-            value={jobLink}
-            onChange={(e) => setJobLink(e.target.value)}
-            placeholder="Enter job posting link"
+            {...register("jobLink")}
             className="w-full p-3 sketch-border bg-white"
           />
         </div>
-      </div>
 
-      <button
-        onClick={onSubmit}
-        disabled={creating}
-        className="press-btn w-full p-3 sketch-border bg-yellow-200 text-xl sm:text-2xl cursor-pointer"
-      >
-        {creating ? "Adding..." : "Add Job 🚀"}
-      </button>
+        {/* Resume Path (temporary) */}
+        <div>
+          <label className="block mb-1 font-semibold">
+            Resume Path (temporary)
+          </label>
+          <input
+            {...register("resumePath")}
+            placeholder="/uploads/resume.pdf"
+            className="w-full p-3 sketch-border bg-white"
+          />
+        </div>
+
+        <button
+          type="submit"
+          disabled={!isValid || creating}
+          className={`w-full p-3 sketch-border text-xl sm:text-2xl 
+            ${!isValid ? "bg-gray-300 cursor-not-allowed" : "bg-yellow-200 cursor-pointer"}`}
+        >
+          {creating ? "Adding..." : "Add Job 🚀"}
+        </button>
+      </form>
     </div>
   );
 }

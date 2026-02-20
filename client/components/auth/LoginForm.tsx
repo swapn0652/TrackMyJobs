@@ -3,6 +3,7 @@
 import { useForm } from "react-hook-form";
 import { useLoginMutation } from "@/hooks/useAuthMutations";
 import { AxiosError } from "axios";
+import { toast } from "sonner";
 
 type FormData = {
   email: string;
@@ -25,7 +26,7 @@ export default function LoginForm({ onNeedVerification }: any) {
           return;
         }
 
-        alert(err.response?.data?.message || "Login failed");
+        toast.error(err.response?.data?.message || "Login failed");
       }
     }
   };
@@ -56,13 +57,6 @@ export default function LoginForm({ onNeedVerification }: any) {
         {loginMutation.isPending ? "Signing in..." : "Sign In 🚀"}
       </button>
 
-      <button
-        type="button"
-        onClick={() => onNeedVerification("")}
-        className="text-center w-full underline text-base sm:text-lg"
-      >
-        Didn't verify email?
-      </button>
     </form>
   );
 }

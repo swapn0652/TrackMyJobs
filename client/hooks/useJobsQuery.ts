@@ -6,10 +6,22 @@ import {
   createJob,
   updateJob,
   deleteJob,
+  fetchJob,
 } from "@/services/jobsService";
 import type { Job } from "@/types/jobs.types";
 
 const JOBS_QUERY_KEY = ["jobs"];
+
+export const useJobQuery = (id: string) => {
+  return useQuery({
+    queryKey: ["job", id],
+    queryFn: ({ queryKey }) => {
+      const [, jobId] = queryKey; // ["job", id]
+      return fetchJob(jobId as string);
+    },
+    enabled: !!id,
+  });
+};
 
 // FETCH
 export const useJobsQuery = () => {
@@ -45,17 +57,14 @@ export const useJobMutations = () => {
   });
 
   return {
-    // actions
     createJob: createMutation.mutateAsync,
     updateJob: updateMutation.mutateAsync,
     deleteJob: deleteMutation.mutateAsync,
 
-    // loading states
     creating: createMutation.isPending,
     updating: updateMutation.isPending,
     deleting: deleteMutation.isPending,
 
-    // ⭐ ERROR STATES (NEW)
     createError: createMutation.error,
     updateError: updateMutation.error,
     deleteError: deleteMutation.error,

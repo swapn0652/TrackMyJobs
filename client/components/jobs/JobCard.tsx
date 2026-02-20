@@ -8,7 +8,7 @@ export default function JobCard({ job }: JobCardProps) {
 
   return (
     <div
-      onClick={() => router.push(`/jobs/${job.id}`)}
+      onClick={() => router.push(`/jobs/job/${job.id}`)}
       className="sketch-border bg-white p-5 cursor-pointer press-btn 
                  hover:-translate-y-1 transition-transform duration-200 space-y-3"
     >

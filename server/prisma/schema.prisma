@@ -32,17 +32,24 @@ model Job {
   id              String          @id @default(uuid())
   user            User            @relation(fields: [userId], references: [id])
   userId          String
+
   companyName     String
   jobRole         String
-  source          String?         // LinkedIn / Referral / Naukri etc
+  location        String
+
+  source          String          // LinkedIn / Referral / Naukri etc
+  jobLink         String? 
+
   status          JobStatus       @default(APPLIED) 
-  appliedDate     DateTime?
+  appliedDate     DateTime
+
   jobDescription  String?         // rich text
   ctcRange        String?         // e.g. "12-15 LPA"
+
   resumePath      String?         // local file path
-  coverLetterPath String?         // optional
-  jobLink         String?         // important
+
   interviewRounds InterviewRound[]
+  
   createdAt       DateTime        @default(now())
 }
 

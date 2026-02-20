@@ -1,9 +1,9 @@
 import express from 'express';
 import cors from 'cors';
-import authRoutes  from './routes/auth';
+import authRoutes  from './routes/authRoutes';
 import dashboardRoutes from './routes/dashboard';
-import interviewRoundsRoutes from './routes/interviewRounds';
-import jobsRoutes from './routes/jobs';
+import interviewRoundsRoutes from './routes/interviewRoundsRoutes';
+import jobsRoutes from './routes/jobsRoutes';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -25,7 +25,6 @@ app.use('/api/jobs', jobsRoutes);
 
 // Test route
 app.get('/', (req, res) => {
-  console.log('GET / called');
   res.status(200).send('Server is live!');
 });
 

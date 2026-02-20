@@ -7,20 +7,38 @@ export interface InterviewRound {
   result?: "Pending" | "Passed" | "Failed";
 };
 
+export enum JobStatus {
+  APPLIED = "APPLIED",
+  INTERVIEWING = "INTERVIEWING",
+  OFFER = "OFFER",
+  REJECTED = "REJECTED",
+}
+
+
 export interface Job {
   id: string;
   userId: string;
+
   companyName: string;
   jobRole: string;
-  source?: string;
-  appliedDate?: string; 
+  location: string;
+
+  source: string;
+  jobLink?: string;
+
+  status: JobStatus;
+
+  appliedDate: string;     
+  createdAt: string;     
+
   jobDescription?: string;
   ctcRange?: string;
+
   resumePath?: string;
-  coverLetterPath?: string;
-  jobLink?: string;
-  interviewRounds?: InterviewRound[]; 
+
+  interviewRounds: InterviewRound[];
 }
+
 
 export interface JobCardProps {
   job: Job;

@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { useJobsQuery } from "@/hooks/useJobsQuery";
 import JobCard from "@/components/jobs/JobCard";
+import Loader from "@/components/ui/Loader";
 
 export default function JobsPage() {
   const { data: jobs = [], isLoading } = useJobsQuery();
@@ -27,6 +28,10 @@ export default function JobsPage() {
   return (
     <div className="space-y-6">
       <h1 className="text-4xl">My Applications 📂</h1>
+
+      {
+        isLoading && <Loader/>
+      }
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {jobs.map((job) => (

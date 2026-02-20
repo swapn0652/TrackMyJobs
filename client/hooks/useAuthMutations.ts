@@ -1,9 +1,12 @@
 import { useMutation } from "@tanstack/react-query";
 import { loginUser, signupUser, verifyOtp } from "@/services/authService";
 import { useAuthStore } from "@/store/authStore";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export const useLoginMutation = () => {
   const login = useAuthStore((s) => s.login);
+  const router = useRouter();
 
   return useMutation({
     mutationFn: ({ email, password }: { email: string; password: string }) =>
@@ -11,7 +14,10 @@ export const useLoginMutation = () => {
 
     onSuccess: (data) => {
       login(data);
-      window.location.href = "/dashboard";
+      toast.success("Welcome back 🎉 Logged in successfully!");
+      setTimeout(() => {
+        router.push("/dashboard");
+      }, 800);
     },
   });
 };
@@ -32,6 +38,7 @@ export const useSignupMutation = () => {
 
 export const useVerifyOtpMutation = () => {
   const login = useAuthStore((s) => s.login);
+  const router = useRouter();
 
   return useMutation({
     mutationFn: ({ email, otp }: { email: string; otp: string }) =>
@@ -39,7 +46,11 @@ export const useVerifyOtpMutation = () => {
 
     onSuccess: (data) => {
       login(data);
-      window.location.href = "/dashboard";
+      toast.success("Account verified 🎉 Welcome!");
+
+      setTimeout(() => {
+        router.push("/dashboard");
+      }, 800);
     },
   });
 };

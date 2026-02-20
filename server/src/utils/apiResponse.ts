@@ -15,10 +15,12 @@ export const sendError = (
 
 export const sendSuccess = (
   res: Response,
-  data: Record<string, any>
+  data: Record<string, any>,
+  message?: string
 ) => {
   return res.json({
     success: true,
-    ...data,
+    message: message || null,
+    data,
   });
 };

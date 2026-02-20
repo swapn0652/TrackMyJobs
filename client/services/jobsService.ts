@@ -8,8 +8,13 @@ export const createJob = async (jobData: Partial<Job>) => {
 
 export const fetchJobs = async () => {
   const res = await axiosClient.get("/api/jobs");
-  return res.data;
+  return res.data.data;
 };
+
+export const fetchJob = async (id: string) => {
+  const res = await axiosClient.get(`/api/jobs/${id}`);
+  return res.data.data;
+}
 
 export const updateJob = async (jobId: string, jobData: Partial<Job>) => {
   const res = await axiosClient.put(`/api/jobs/${jobId}`, jobData);
