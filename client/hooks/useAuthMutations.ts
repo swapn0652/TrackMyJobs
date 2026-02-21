@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
-import { loginUser, signupUser, verifyOtp } from "@/services/authService";
-import { useAuthStore } from "@/store/authStore";
+import { loginUser, signupUser, verifyOtp } from "@/services/auth.service";
+import { useAuthStore } from "@/store/auth.store";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 

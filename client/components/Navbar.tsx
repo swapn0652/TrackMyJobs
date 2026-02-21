@@ -2,7 +2,7 @@
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import Sidebar from "./Sidebar";
-import { useAuthStore } from "@/store/authStore";
+import { useAuthStore } from "@/store/auth.store";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);

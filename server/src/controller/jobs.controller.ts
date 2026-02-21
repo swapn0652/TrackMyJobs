@@ -1,6 +1,6 @@
 import type { Response } from "express";
 import { AuthRequest } from "../types/auth";
-import { jobsService } from "../services/jobsService";
+import { jobsService } from "../services/jobs.service";
 import { sendError, sendSuccess } from "../utils/apiResponse";
 
 export const jobsController = {

@@ -1,7 +1,6 @@
 "use client";
-
 import Loader from "./Loader";
-import { useLoaderStore } from "@/store/useLoaderStore";
+import { useLoaderStore } from "@/store/useLoader.store";
 
 export default function GlobalLoader() {
   const isLoading = useLoaderStore((state) => state.isLoading);

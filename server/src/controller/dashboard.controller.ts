@@ -1,6 +1,6 @@
 import { Response } from "express";
 import { AuthRequest } from "../types/auth";
-import { dashboardService } from "../services/dashboardService";
+import { dashboardService } from "../services/dashboard.service";
 import { sendSuccess, sendError } from "../utils/apiResponse";
 
 export const dashboardController = {

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { authService } from "../services/authService"; 
+import { authService } from "../services/auth.service"; 
 import { sendSuccess, sendError } from "../utils/apiResponse";
 
 export const authController = {

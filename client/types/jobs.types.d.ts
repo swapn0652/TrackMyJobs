@@ -43,3 +43,15 @@ export interface Job {
 export interface JobCardProps {
   job: Job;
 };
+
+export interface CreateJobDTO {
+  companyName: string;
+  jobRole: string;
+  location: string;
+  source: string;
+  appliedDate: string;
+  jobDescription?: string;
+  ctcRange?: string;
+  jobLink?: string;
+  resumePath?: string;
+};

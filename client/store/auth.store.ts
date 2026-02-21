@@ -3,7 +3,7 @@ import type { AuthState, LoginResponse } from "@/types/auth.types";
 
 const storedAuth =
   typeof window !== "undefined"
-    ? JSON.parse(localStorage.getItem("auth") || "null")
+    ? JSON.parse(localStorage.getItem("auth") || "null")?.data
     : null;
 
 export const useAuthStore = create<AuthState>((set) => ({

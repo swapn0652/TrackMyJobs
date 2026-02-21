@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { authenticate } from "../middleware/auth";
-import { interviewRoundsController } from "../controller/interviewRoundsController";
+import { authenticate } from "../middleware/auth.middleware";
+import { interviewRoundsController } from "../controller/interviewRounds.controller";
 
 const router = Router();
 router.use(authenticate);

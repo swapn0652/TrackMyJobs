@@ -7,7 +7,7 @@ import {
   updateJob,
   deleteJob,
   fetchJob,
-} from "@/services/jobsService";
+} from "@/services/jobs.service";
 import type { Job } from "@/types/jobs.types";
 
 const JOBS_QUERY_KEY = ["jobs"];

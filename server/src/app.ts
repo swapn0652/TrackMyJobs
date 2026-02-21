@@ -1,10 +1,12 @@
 import express from 'express';
 import cors from 'cors';
-import authRoutes  from './routes/authRoutes';
-import dashboardRoutes from './routes/dashboard';
-import interviewRoundsRoutes from './routes/interviewRoundsRoutes';
-import jobsRoutes from './routes/jobsRoutes';
+import authRoutes  from './routes/auth.routes';
+import dashboardRoutes from './routes/dashboard.routes';
+import interviewRoundsRoutes from './routes/interviewRounds.routes';
+import jobsRoutes from './routes/jobs.routes';
 import dotenv from 'dotenv';
+import uploadRoutes from './routes/upload.routes';
+import path from 'path';
 dotenv.config();
 
 const app = express();
@@ -22,6 +24,12 @@ app.use('/api/auth', authRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/interview-rounds', interviewRoundsRoutes);
 app.use('/api/jobs', jobsRoutes);
+app.use(
+  "/uploads",
+  express.static(path.join(__dirname, "../uploads"))
+);
+
+app.use("/api/upload", uploadRoutes)
 
 // Test route
 app.get('/', (req, res) => {

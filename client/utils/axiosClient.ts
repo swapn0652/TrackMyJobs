@@ -1,8 +1,7 @@
-import { useAuthStore } from "@/store/authStore";
-import { useLoaderStore } from "@/store/useLoaderStore";
+import { useAuthStore } from "@/store/auth.store";
+import { useLoaderStore } from "@/store/useLoader.store";
 import axios from "axios";
 
-// console.log("base URL: ", process.env.NEXT_PUBLIC_API_BASE_URL);
 
 export const axiosClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
