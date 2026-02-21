@@ -8,11 +8,13 @@ import { useUpload } from "@/hooks/useUpload";
 import { CreateJobDTO } from "@/types/jobs.types";
 import { getErrorMessage } from "@/utils/error";
 import { Briefcase, PlusCircle } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function AddJobForm() {
   const { createJob, creating, createError } = useJobMutations();
   const { uploadFile, uploading, uploadError } = useUpload();
   const [uploadedFileName, setUploadedFileName] = useState<string | null>(null);
+  const router = useRouter();
 
   const { register, handleSubmit, reset, setValue, formState: { errors, isValid } } = useForm<CreateJobDTO>({
     mode: "onChange",
@@ -35,17 +37,22 @@ export default function AddJobForm() {
 
   // Handle form submit
   const onSubmit = async (data: CreateJobDTO) => {
-    console.log("DATA: ", data);
     await createJob({
       ...data,
       jobDescription: data.jobDescription || undefined,
-      ctcRange: data.ctcRange || undefined,
       jobLink: data.jobLink || undefined,
-      resumePath: data.resumePath && data.resumePath !== "" ? data.resumePath : undefined,
+      resumePath:
+        data.resumePath && data.resumePath !== ""
+          ? data.resumePath
+          : undefined,
+
+      minCtc: data.minCtc ? Number(data.minCtc) : undefined,
+      maxCtc: data.maxCtc ? Number(data.maxCtc) : undefined,
     });
 
     reset();
     setUploadedFileName(null);
+    router.push("/jobs");
   };
 
   return (
@@ -123,11 +130,25 @@ export default function AddJobForm() {
 
         {/* CTC */}
         <div>
-          <label className="block mb-1 font-semibold">CTC Range</label>
-          <input
-            {...register("ctcRange")}
-            className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
-          />
+          <label className="block mb-1 font-semibold">CTC Range (LPA)</label>
+
+          <div className="flex gap-4">
+            <input
+              type="number"
+              step="0.1"
+              placeholder="Min CTC"
+              {...register("minCtc")}
+              className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
+            />
+
+            <input
+              type="number"
+              step="0.1"
+              placeholder="Max CTC"
+              {...register("maxCtc")}
+              className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
+            />
+          </div>
         </div>
 
         {/* Job Link */}

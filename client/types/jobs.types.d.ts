@@ -32,7 +32,9 @@ export interface Job {
   createdAt: string;     
 
   jobDescription?: string;
-  ctcRange?: string;
+  // ctcRange?: string;
+  minCtc: number;
+  maxCtc: number;
 
   resumePath?: string;
 
@@ -51,7 +53,8 @@ export interface CreateJobDTO {
   source: string;
   appliedDate: string;
   jobDescription?: string;
-  ctcRange?: string;
+  minCtc?: number;
+  maxCtc?: number;
   jobLink?: string;
   resumePath?: string;
 };

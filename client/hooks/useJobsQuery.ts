@@ -1,6 +1,6 @@
 "use client";
 
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient, keepPreviousData } from "@tanstack/react-query";
 import {
   fetchJobs,
   createJob,
@@ -23,11 +23,11 @@ export const useJobQuery = (id: string) => {
   });
 };
 
-// FETCH
-export const useJobsQuery = () => {
+export const useJobsQuery = (filters: Record<string, any>) => {
   return useQuery<Job[]>({
-    queryKey: JOBS_QUERY_KEY,
-    queryFn: fetchJobs,
+    queryKey: ["jobs", filters],
+    queryFn: () => fetchJobs(filters),
+    placeholderData: keepPreviousData
   });
 };
 

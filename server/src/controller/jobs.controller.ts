@@ -1,12 +1,13 @@
 import type { Response } from "express";
 import { AuthRequest } from "../types/auth";
-import { jobsService } from "../services/jobs.service";
 import { sendError, sendSuccess } from "../utils/apiResponse";
+import { jobsService } from "../services/jobs.service";
 
 export const jobsController = {
   getAllJobs: async (req: AuthRequest, res: Response) => {
     try {
-      const jobs = await jobsService.getAllJobs(req.userId!);
+      const jobs = await jobsService.getAllJobs(req.userId!, req.query);
+
       return sendSuccess(res, jobs);
     } catch (err) {
       console.error("GET JOBS ERROR:", err);

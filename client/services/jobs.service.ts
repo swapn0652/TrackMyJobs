@@ -6,8 +6,8 @@ export const createJob = async (jobData: Partial<Job>) => {
   return res.data;
 };
 
-export const fetchJobs = async () => {
-  const res = await axiosClient.get("/api/jobs");
+export const fetchJobs = async (params: Record<string, any>) => {
+  const res = await axiosClient.get("/api/jobs", { params });
   return res.data.data;
 };
 

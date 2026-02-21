@@ -15,6 +15,7 @@ export default function JobCard({ job }: JobCardProps) {
       <div>
         <h2 className="text-2xl font-bold">{job.companyName}</h2>
         <p className="text-lg">{job.jobRole}</p>
+        <p className="text-sm text-gray-600">{job.location}</p>
       </div>
 
       <div className="flex flex-wrap gap-2 text-sm">
@@ -24,9 +25,9 @@ export default function JobCard({ job }: JobCardProps) {
           </span>
         )}
 
-        {job.ctcRange && (
+        {(job.minCtc || job.maxCtc) && (
           <span className="bg-green-100 px-2 py-1 sketch-border">
-            💰 {job.ctcRange}
+            💰 {job.minCtc ?? "?"} - {job.maxCtc ?? "?"} LPA
           </span>
         )}
 
@@ -36,12 +37,6 @@ export default function JobCard({ job }: JobCardProps) {
           </span>
         )}
       </div>
-
-      {/* {job.jobDescription && (
-        <p className="text-sm line-clamp-3">
-          {job.jobDescription}
-        </p>
-      )} */}
     </div>
   );
 }

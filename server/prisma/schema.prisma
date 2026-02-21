@@ -37,16 +37,18 @@ model Job {
   jobRole         String
   location        String
 
-  source          String          // LinkedIn / Referral / Naukri etc
+  source          String
   jobLink         String? 
 
   status          JobStatus       @default(APPLIED) 
   appliedDate     DateTime
 
-  jobDescription  String?         // rich text
-  ctcRange        String?         // e.g. "12-15 LPA"
+  jobDescription  String?
 
-  resumePath      String?         // local file path
+  minCtc          Float?          
+  maxCtc          Float?         
+
+  resumePath      String?
 
   interviewRounds InterviewRound[]
   

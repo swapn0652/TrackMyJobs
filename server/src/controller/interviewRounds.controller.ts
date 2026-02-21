@@ -1,6 +1,6 @@
 import { Response } from "express";
 import { AuthRequest } from "../types/auth";
-import { interviewRoundsService } from "../services/interviewRounds.service";
+import { interviewRoundsService } from "../services/interviewRoundsService";
 import { sendSuccess, sendError } from "../utils/apiResponse";
 
 export const interviewRoundsController = {

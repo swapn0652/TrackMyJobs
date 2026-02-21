@@ -36,7 +36,19 @@ export default function JobDetailsCard({ job }: { job: Job }) {
       {/* INFO GRID */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <InfoItem icon={<MapPin size={18} />} label="Location" value={job.location} />
-        <InfoItem icon={<DollarSign size={18} />} label="CTC" value={job.ctcRange || "Not specified"} />
+        <InfoItem
+          icon={<DollarSign size={18} />}
+          label="CTC"
+          value={
+            job.minCtc && job.maxCtc
+              ? `${job.minCtc} - ${job.maxCtc} LPA`
+              : job.minCtc
+              ? `From ${job.minCtc} LPA`
+              : job.maxCtc
+              ? `Up to ${job.maxCtc} LPA`
+              : "Not specified"
+          }
+        />
         <InfoItem icon={<Calendar size={18} />} label="Applied On" value={formatDate(job.appliedDate)} />
         <InfoItem icon={<Activity size={18} />} label="Status" value={job.status} />
         {job.jobLink && (
