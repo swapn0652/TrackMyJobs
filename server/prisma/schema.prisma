@@ -77,8 +77,8 @@ model RefreshToken {
 
 // Enums
 enum RoundResult {
-  PASS
-  FAIL
+  PASSED
+  FAILED
   WAITING
 }
 

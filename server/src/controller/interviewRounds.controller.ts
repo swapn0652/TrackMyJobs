@@ -1,6 +1,6 @@
 import { Response } from "express";
 import { AuthRequest } from "../types/auth";
-import { interviewRoundsService } from "../services/interviewRoundsService";
+import { interviewRoundsService } from "../services/interviewRounds.service";
 import { sendSuccess, sendError } from "../utils/apiResponse";
 
 export const interviewRoundsController = {
@@ -30,6 +30,21 @@ export const interviewRoundsController = {
       return sendSuccess(res, deleted);
     } catch (err: any) {
       return sendError(res, err.status || 500, err.code || "SERVER_ERROR", err.message || "Server error");
+    }
+  },
+
+  syncRounds: async (req: AuthRequest, res: Response) => {
+    try {
+      const jobId = req.params.jobId as string;
+      const updated = await interviewRoundsService.syncRounds(
+        req.userId!,
+        jobId,
+        req.body.rounds
+      );
+
+      return sendSuccess(res, updated);
+    } catch (err: any) {
+      return sendError(res, err.status || 500, "SERVER_ERROR", err.message);
     }
   },
 };

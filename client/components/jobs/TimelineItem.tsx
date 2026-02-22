@@ -1,8 +1,32 @@
-export default function TimelineItem({ title, status }: { title: string; status: string }) {
+"use client";
+
+import { TimelineItemProps } from "@/types/jobs.types";
+
+export default function TimelineItem({
+  title,
+  status,
+  date,
+  notes,
+}: TimelineItemProps) {
   return (
-    <div className="border-l-2 border-gray-300 pl-4">
-      <p className="font-medium text-gray-800">{title}</p>
-      <p className="text-sm text-gray-500">Status: {status}</p>
+    <div className="border-l-4 border-blue-400 pl-4 space-y-2 pb-4">
+      
+      <div className="flex justify-between items-center">
+        <h4 className="font-semibold text-gray-800">{title}</h4>
+        <span className="text-sm text-gray-600">{status}</span>
+      </div>
+
+      {date && (
+        <p className="text-sm text-gray-500">
+          {date}
+        </p>
+      )}
+
+      {notes && (
+        <div className="bg-gray-50 p-3 rounded-lg text-sm text-gray-700">
+          {notes}
+        </div>
+      )}
     </div>
   );
 }

@@ -1,11 +1,12 @@
+export type RoundResult = "WAITING" | "PASSED" | "FAILED";
+
 export interface InterviewRound {
   id: string;
-  jobId: string;
-  roundType: string; 
-  roundDate: string; 
-  notes?: string;
-  result?: "Pending" | "Passed" | "Failed";
-};
+  roundType: string;
+  roundDate: string | null;
+  notes?: string | null;
+  result: RoundResult;
+}
 
 export enum JobStatus {
   APPLIED = "APPLIED",
@@ -57,4 +58,12 @@ export interface CreateJobDTO {
   maxCtc?: number;
   jobLink?: string;
   resumePath?: string;
+};
+
+
+export interface TimelineItemProps {
+  title: string;
+  status: string;
+  date?: string;
+  notes?: string | null;
 };

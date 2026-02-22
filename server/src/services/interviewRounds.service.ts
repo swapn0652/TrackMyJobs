@@ -40,4 +40,46 @@ export const interviewRoundsService = {
     await prisma.interviewRound.delete({ where: { id: round.id } });
     return { id: round.id };
   },
+
+  syncRounds: async (userId: string, jobId: string, rounds: any[]) => {
+    const job = await prisma.job.findFirst({
+      where: { id: jobId, userId },
+      include: { interviewRounds: true },
+    });
+
+    if (!job) throw { status: 404, message: "Job not found" };
+
+    const existingRounds = job.interviewRounds;
+
+    const incomingIds = rounds.filter(r => r.id).map(r => r.id);
+
+    await prisma.interviewRound.deleteMany({
+      where: {
+        jobId,
+        id: { notIn: incomingIds },
+      },
+    });
+
+    for (const round of rounds) {
+      if (round.id) {
+        await prisma.interviewRound.update({
+          where: { id: round.id },
+          data: {
+            ...round,
+            roundDate: round.roundDate ? new Date(round.roundDate) : null,
+          },
+        });
+      } else {
+        await prisma.interviewRound.create({
+          data: {
+            jobId,
+            ...round,
+            roundDate: round.roundDate ? new Date(round.roundDate) : null,
+          },
+        });
+      }
+    }
+
+    return prisma.interviewRound.findMany({ where: { jobId } });
+  },
 };

@@ -3,7 +3,7 @@
 import { useJobQuery } from "@/hooks/useJobsQuery";
 import Loader from "@/components/ui/Loader";
 import JobDetailsCard from "@/components/jobs/JobDetailsCard";
-import InterviewDetailsCard from "@/components/jobs/InterviewDetailsCard";
+import InterviewDetailsCard from "@/components/interviewRounds/InterviewDetailsCard";
 
 export default function JobDetailsClient({ id }: { id: string }) {
   const { data: job, isLoading, isError } = useJobQuery(id);
@@ -20,7 +20,7 @@ export default function JobDetailsClient({ id }: { id: string }) {
   return (
     <div className="p-6 md:p-10 max-w-5xl mx-auto space-y-8">
       <JobDetailsCard job={job} />
-      <InterviewDetailsCard />
+      <InterviewDetailsCard job={job}/>
     </div>
   );
 }

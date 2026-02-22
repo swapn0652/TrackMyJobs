@@ -8,5 +8,6 @@ router.use(authenticate);
 router.post("/", interviewRoundsController.addRound);
 router.put("/:id", interviewRoundsController.updateRound);
 router.delete("/:id", interviewRoundsController.deleteRound);
+router.put("/job/:jobId", interviewRoundsController.syncRounds);
 
 export default router;
