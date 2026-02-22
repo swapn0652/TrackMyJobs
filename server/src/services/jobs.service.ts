@@ -131,13 +131,18 @@ export const jobsService = {
   },
 
 
-  updateJob: async (userId: string, jobId: string, jobData: Partial<Job>) => {
+  updateJob: async (userId: string, jobId: string, jobData: any) => {
     const job = await prisma.job.findFirst({ where: { id: jobId, userId } });
     if (!job) return null;
 
     return prisma.job.update({
       where: { id: jobId },
-      data: jobData,
+      data: {
+        ...jobData,
+        appliedDate: jobData.appliedDate
+          ? new Date(jobData.appliedDate)
+          : undefined,
+      },
     });
   },
 

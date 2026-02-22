@@ -16,7 +16,7 @@ export const useJobQuery = (id: string) => {
   return useQuery({
     queryKey: ["job", id],
     queryFn: ({ queryKey }) => {
-      const [, jobId] = queryKey; // ["job", id]
+      const [, jobId] = queryKey;
       return fetchJob(jobId as string);
     },
     enabled: !!id,
@@ -44,9 +44,17 @@ export const useJobMutations = () => {
   const updateMutation = useMutation({
     mutationFn: ({ id, data }: { id: string; data: Partial<Job> }) =>
       updateJob(id, data),
-    onSuccess: () => {
+
+    onSuccess: (response, variables) => {
+      const updatedJob = response.data;
+
+      queryClient.setQueryData(
+        ["job", variables.id],
+        updatedJob
+      );
+
       queryClient.invalidateQueries({ queryKey: JOBS_QUERY_KEY });
-    },
+    }
   });
 
   const deleteMutation = useMutation({
@@ -70,4 +78,3 @@ export const useJobMutations = () => {
     deleteError: deleteMutation.error,
   };
 };
-

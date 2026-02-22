@@ -42,6 +42,7 @@ export const jobsController = {
       if (!updatedJob) return sendError(res, 404, "JOB_NOT_FOUND", "Job not found");
       return sendSuccess(res, updatedJob, "Job updated successfully");
     } catch (err) {
+      console.log(err);
       return sendError(res, 500, "SERVER_ERROR", "Failed to update job");
     }
   },
