@@ -2,12 +2,26 @@ import { prisma } from "../prisma";
 
 export const dashboardService = {
   getSummary: async (userId: string) => {
-    const total = await prisma.job.count({ where: { userId } });
-    const offers = await prisma.job.count({ where: { userId, status: 'OFFER' } });
-    const rejected = await prisma.job.count({ where: { userId, status: 'REJECTED' } });
-    const interviewing = await prisma.job.count({ where: { userId, status: 'INTERVIEWING' } });
+    const [total, offers, rejected, interviewing] = await Promise.all([
+      prisma.job.count({ where: { userId } }),
+      prisma.job.count({ where: { userId, status: "OFFER" } }),
+      prisma.job.count({ where: { userId, status: "REJECTED" } }),
+      prisma.job.count({ where: { userId, status: "INTERVIEWING" } }),
+    ]);
 
-    return { totalApplications: total, offers, rejected, interviewing };
+    const offerRate = total ? Number(((offers / total) * 100).toFixed(1)) : 0;
+    const interviewRate = total ? Number(((interviewing / total) * 100).toFixed(1)) : 0;
+    const rejectionRate = total ? Number(((rejected / total) * 100).toFixed(1)) : 0;
+
+    return {
+      totalApplications: total,
+      offers,
+      rejected,
+      interviewing,
+      offerRate,
+      interviewRate,
+      rejectionRate,
+    };
   },
 
   getBySource: async (userId: string) => {
@@ -36,13 +50,20 @@ export const dashboardService = {
 
     const monthlyMap: Record<string, number> = {};
 
-    jobs.forEach(job => {
+    jobs.forEach((job) => {
       if (!job.appliedDate) return;
-      const month = job.appliedDate.toISOString().slice(0, 7); // YYYY-MM
+
+      const date = new Date(job.appliedDate);
+      const month = `${date.getFullYear()}-${String(
+        date.getMonth() + 1
+      ).padStart(2, "0")}`;
+
       monthlyMap[month] = (monthlyMap[month] || 0) + 1;
     });
 
-    return Object.entries(monthlyMap).map(([month, count]) => ({ month, count }));
+    return Object.entries(monthlyMap)
+      .map(([month, count]) => ({ month, count }))
+      .sort((a, b) => a.month.localeCompare(b.month));
   },
 
   getFunnel: async (userId: string) => {
