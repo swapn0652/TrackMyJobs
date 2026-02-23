@@ -31,3 +31,35 @@ axiosClient.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+axiosClient.interceptors.response.use(
+  (res) => res,
+  async (error) => {
+    const originalRequest = error.config;
+
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+
+      try {
+        const res = await axios.post(
+          `${process.env.NEXT_PUBLIC_API_URL}/auth/refresh`,
+          {},
+          { withCredentials: true }
+        );
+
+        const newAccessToken = res.data.data.accessToken;
+
+        useAuthStore.getState().setAccessToken(newAccessToken);
+
+        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+
+        return axiosClient(originalRequest);
+      } catch (err) {
+        useAuthStore.getState().logout();
+        window.location.href = "/auth";
+      }
+    }
+
+    return Promise.reject(error);
+  }
+);

@@ -2,6 +2,7 @@ import KPISection from "@/components/dashboard/KPISection";
 import MonthlyLineChart from "@/components/dashboard/MonthlyLineChart";
 import StatusPieChart from "@/components/dashboard/StatusPieChart";
 import SourceBarChart from "@/components/dashboard/SourceBarChart";
+import FunnelChart from "@/components/dashboard/FunnelChart";
 
 export default function DashboardPage() {
   return (
@@ -14,6 +15,8 @@ export default function DashboardPage() {
         <StatusPieChart />
         <SourceBarChart />
       </div>
+
+      <FunnelChart />
     </div>
   );
 }

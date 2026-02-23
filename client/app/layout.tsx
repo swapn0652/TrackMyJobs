@@ -1,11 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Sidebar from "../components/Sidebar";
-import Navbar from "../components/Navbar";
 import { Caveat, Indie_Flower } from "next/font/google";
-import ReactQueryProvider from "@/providers/ReactQueryProvider";
-import { Toaster } from "sonner";
-import GlobalLoader from "@/components/ui/GlobalLoader";
+import AuthGuard from "@/components/auth/AuthGuards";
+import AppLayoutWrapper from "@/components/layout/AppLayoutWrapper";
 
 const caveat = Caveat({
   subsets: ["latin"],
@@ -32,28 +29,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${caveat.variable} ${indieFlower.variable}`}>
       <body className="h-screen overflow-hidden font-[Caveat]">
-
-        <div className="flex h-full">
-
-          {/* DESKTOP SIDEBAR */}
-          <aside className="hidden md:block w-[260px] border-r-2 border-black">
-            <Sidebar />
-          </aside>
-
-          {/* RIGHT SECTION */}
-          <div className="flex-1 flex flex-col">
-            <Navbar />
-            <ReactQueryProvider>
-              <main className="flex-1 overflow-y-auto p-4 sm:p-6">
-                {children}
-                <Toaster position="top-right" richColors />
-                <GlobalLoader />
-              </main>
-            </ReactQueryProvider>
-          </div>
-
-        </div>
-
+        <AuthGuard>
+          <AppLayoutWrapper>{children}</AppLayoutWrapper>
+        </AuthGuard>
       </body>
     </html>
   );

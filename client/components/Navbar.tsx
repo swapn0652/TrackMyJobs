@@ -1,18 +1,36 @@
 "use client";
-import { Menu, X } from "lucide-react";
+
+import { Menu } from "lucide-react";
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 import Sidebar from "./Sidebar";
 import { useAuthStore } from "@/store/auth.store";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
   const user = useAuthStore((s) => s.user);
+
+  // Route → Title map
+  const routeTitles: Record<string, string> = {
+    "/dashboard": "Dashboard ",
+    "/jobs": "My Jobs",
+    "/add-job": "Add New Job",
+  };
+
+  // Handle dynamic routes like /jobs/123
+  const getTitle = () => {
+    if (pathname.startsWith("/jobs/") && pathname !== "/jobs") {
+      return "Job Details";
+    }
+
+    return routeTitles[pathname] || "Track My Jobs ✨";
+  };
 
   return (
     <>
       <nav className="h-16 border-b-2 border-black flex items-center justify-between px-4 sm:px-6 bg-white">
         <div className="flex items-center gap-3">
-          {/* MOBILE BURGER */}
           <button
             className="md:hidden press-btn sketch-border p-2 bg-yellow-200 cursor-pointer"
             onClick={() => setOpen(true)}
@@ -20,7 +38,9 @@ export default function Navbar() {
             <Menu />
           </button>
 
-          <h1 className="text-2xl sm:text-3xl">Dashboard ✏️</h1>
+          <h1 className="text-2xl sm:text-3xl">
+            {getTitle()}
+          </h1>
         </div>
 
         <div className="text-lg sm:text-xl">
@@ -28,9 +48,8 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* MOBILE SIDEBAR + OVERLAY */}
+      {/* Mobile Sidebar */}
       <div className="md:hidden">
-        {/* Overlay */}
         <div
           className={`fixed inset-0 z-40 bg-black/40 transition-opacity duration-300 ${
             open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
@@ -38,14 +57,13 @@ export default function Navbar() {
           onClick={() => setOpen(false)}
         />
 
-        {/* Sliding Sidebar */}
         <div
           className={`fixed left-0 top-0 z-50 h-full w-[260px] bg-white border-r-2 border-black
             transform transition-transform duration-300 ease-out
             ${open ? "translate-x-0" : "-translate-x-full"}
           `}
         >
-          <Sidebar onItemClick={() => setOpen(false)} />
+          <Sidebar />
         </div>
       </div>
     </>

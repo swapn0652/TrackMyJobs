@@ -30,3 +30,9 @@ export const useRecentActivity = () =>
     queryKey: ["dashboard-recent"],
     queryFn: dashboardService.getRecentActivity,
   });
+
+export const useFunnel = () =>
+  useQuery({
+    queryKey: ["dashboard-funnel"],
+    queryFn: dashboardService.getFunnel,
+  });

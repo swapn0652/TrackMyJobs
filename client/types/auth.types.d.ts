@@ -29,4 +29,5 @@ export type AuthState = {
   refreshToken: string | null;
   login: (data: LoginResponse) => void;
   logout: () => void;
+  setAccessToken: (token: string) => void;
 };

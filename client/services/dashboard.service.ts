@@ -27,4 +27,9 @@ export const dashboardService = {
     const res = await axiosClient.get("/api/dashboard/recent-activity");
     return res.data.data;
   },
+
+  getFunnel: async () => {
+    const res = await axiosClient.get("/api/dashboard/funnel");
+    return res.data.data;
+  }
 };
